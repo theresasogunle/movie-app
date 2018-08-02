@@ -86,7 +86,7 @@ public class card_payment_dp extends HttpServlet {
             payload.setExpirymonth(expiry_month);
             payload.setTxRef(txref);
             payload.setPayment_plan(plan_id);
-            payload.setRedirect_url("http://ravemovies/verify");
+            payload.setRedirect_url("https://ravemovies.herokuapp.com/verify");
 
             JSONObject charge = payload.chargeCard();
 

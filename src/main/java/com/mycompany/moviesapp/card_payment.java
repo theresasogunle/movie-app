@@ -62,12 +62,12 @@ public class card_payment extends HttpServlet {
         String txref = "MX-"+txRef;
         payload.setCardno(cardnumber);
         payload.setCvv(cvv);
-        payload.setAmount("1000");
+        payload.setAmount("2000");
         payload.setEmail(email);
         payload.setExpiryyear(expiry_year);
         payload.setExpirymonth(expiry_month);
         payload.setTxRef(txref);
-        payload.setRedirect_url("http://ravemovies/verify");
+        payload.setRedirect_url("https://ravemovies.herokuapp.com/verify");
 
         JSONObject charge = payload.chargeCard();
 
