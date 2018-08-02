@@ -43,7 +43,7 @@ public class card_payment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          String cardnumber = request.getParameter("cardnumber");
+        String cardnumber = request.getParameter("cardnumber");
         String cvv = request.getParameter("cvv");
         String email = request.getParameter("email");
         String pin = request.getParameter("pin");
@@ -59,7 +59,7 @@ public class card_payment extends HttpServlet {
         RaveConstant.SECRET_KEY = "FLWSECK-8abf446c71a58aaa858323f3a9ed156b-X";
 
         CardCharge payload = new CardCharge();
-        String txref = "MX-"+txRef;
+        String txref = "MX-" + txRef;
         payload.setCardno(cardnumber);
         payload.setCvv(cvv);
         payload.setAmount("2000");
@@ -67,7 +67,8 @@ public class card_payment extends HttpServlet {
         payload.setExpiryyear(expiry_year);
         payload.setExpirymonth(expiry_month);
         payload.setTxRef(txref);
-        payload.setRedirect_url("https://ravemovies.herokuapp.com/verify");
+//        payload.setRedirect_url("https://ravemovies.herokuapp.com/verify");
+        payload.setRedirect_url("http://localhost:8080/MoviesApp/verify");
 
         JSONObject charge = payload.chargeCard();
 
@@ -80,9 +81,26 @@ public class card_payment extends HttpServlet {
             response.sendRedirect("failed");
             return;
         }
+        JSONObject data = (JSONObject) charge.get("data");
+       
+      if(data.has("chargeResponseCode")){
+        if (data.get("chargeResponseCode").equals("02")) {
+             String authmodel = (String) data.get("authModelUsed");
+            if (data.get("authModelUsed").equals("VBVSECURECODE")) {
+                String authurl = (String) data.get("authurl");
+                 HttpSession session = request.getSession(true);
+                 session.setAttribute("txRef", txref);
+                response.sendRedirect(authurl);
+                return;
+            } else if (authmodel.equalsIgnoreCase("access_otp") || authmodel.equalsIgnoreCase("gtb_otp")) {
 
-        if (charge.get("status").equals("success")) {
-            JSONObject data = (JSONObject) charge.get("data");
+                response.sendRedirect("otp");
+                return;
+            }
+        }else{
+        response.sendRedirect("success");
+        }
+      }
             if (data.has("suggested_auth")) {
                 String authmode = (String) data.get("suggested_auth");
 
@@ -109,7 +127,7 @@ public class card_payment extends HttpServlet {
                 response.sendRedirect("success");
                 return;
             }
-        }
+        
         doGet(request, response);
 
     }
