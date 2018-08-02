@@ -1,0 +1,9 @@
+com\rave\test\SubAccountTestCase.class
+com\rave\test\CardChargeTestCase.class
+com\rave\test\JUnitTestSuite.class
+com\rave\test\RecurringPaymentTestCase.class
+com\rave\test\TestRunner.class
+com\rave\test\TransferTestCase.class
+com\rave\test\AccountChargeTestCase.class
+com\rave\test\BvnValidationTestCase.class
+com\rave\test\QRChargeTestCase.class
