@@ -67,8 +67,8 @@ public class card_payment extends HttpServlet {
         payload.setExpiryyear(expiry_year);
         payload.setExpirymonth(expiry_month);
         payload.setTxRef(txref);
-//        payload.setRedirect_url("https://ravemovies.herokuapp.com/verify");
-        payload.setRedirect_url("http://localhost:8080/MoviesApp/verify");
+        payload.setRedirect_url("https://ravemovies.herokuapp.com/verify");
+//        payload.setRedirect_url("http://localhost:8080/MoviesApp/verify");
 
         JSONObject charge = payload.chargeCard();
 
@@ -82,52 +82,59 @@ public class card_payment extends HttpServlet {
             return;
         }
         JSONObject data = (JSONObject) charge.get("data");
-       
-      if(data.has("chargeResponseCode")){
-        if (data.get("chargeResponseCode").equals("02")) {
-             String authmodel = (String) data.get("authModelUsed");
-            if (data.get("authModelUsed").equals("VBVSECURECODE")) {
-                String authurl = (String) data.get("authurl");
-                 HttpSession session = request.getSession(true);
-                 session.setAttribute("txRef", txref);
-                response.sendRedirect(authurl);
-                return;
-            } else if (authmodel.equalsIgnoreCase("access_otp") || authmodel.equalsIgnoreCase("gtb_otp")) {
 
-                response.sendRedirect("otp");
-                return;
-            }
-        }else{
-        response.sendRedirect("success");
-        }
-      }
-            if (data.has("suggested_auth")) {
-                String authmode = (String) data.get("suggested_auth");
-
-                if (authmode.equals("PIN")) {
+        if (data.has("chargeResponseCode")) {
+            if (data.get("chargeResponseCode").equals("02")) {
+                String authmodel = (String) data.get("authModelUsed");
+                if (data.get("authModelUsed").equals("VBVSECURECODE")) {
+                    String authurl = (String) data.get("authurl");
                     HttpSession session = request.getSession(true);
-                    session.setAttribute("pay", payload);
-                    session.setAttribute("auth", authmode);
                     session.setAttribute("txRef", txref);
-                    response.sendRedirect("pin");
+                    response.sendRedirect(authurl);
                     return;
-
-                } else if (authmode.equals("NOAUTH_INTERNATIONAL") || authmode.equalsIgnoreCase("AVS_VBVSECURECODE")) {
-
+                } else if (authmodel.equalsIgnoreCase("access_otp") || authmodel.equalsIgnoreCase("gtb_otp")) {
                     HttpSession session = request.getSession(true);
-
-                    session.setAttribute("pay", payload);
-                    session.setAttribute("auth", authmode);
+                    String flw = (String) data.get("flwRef");
+                    session.setAttribute("flwRef", flw);
                     session.setAttribute("txRef", txref);
-                    response.sendRedirect("avs");
+//                  
+
+                    response.sendRedirect("otpcard");
                     return;
                 }
-
             } else {
+                String message = (String) charge.get("status");
+                System.out.println(message);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("message", message);
                 response.sendRedirect("success");
                 return;
             }
-        
+        }
+        if (data.has("suggested_auth")) {
+            String authmode = (String) data.get("suggested_auth");
+
+            if (authmode.equals("PIN")) {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("pay", payload);
+                session.setAttribute("auth", authmode);
+                session.setAttribute("txRef", txref);
+                response.sendRedirect("pin");
+                return;
+
+            } else if (authmode.equals("NOAUTH_INTERNATIONAL") || authmode.equalsIgnoreCase("AVS_VBVSECURECODE")) {
+
+                HttpSession session = request.getSession(true);
+
+                session.setAttribute("pay", payload);
+                session.setAttribute("auth", authmode);
+                session.setAttribute("txRef", txref);
+                response.sendRedirect("avs");
+                return;
+            }
+
+        }
+
         doGet(request, response);
 
     }

@@ -63,14 +63,18 @@ public class account extends HttpServlet {
                     .setTxRef(txref)
                     .setAmount("2000")
                     .setCountry("NG")
-                    
+                    .setRedirect_url("https://ravemovies.herokuapp.com/verify")
                     .setCurrency("NGN");
 
             JSONObject charge = ch.chargeAccount();
 
             System.out.println(charge);
             JSONObject data = (JSONObject) charge.get("data");
+            
             if (charge.get("status").equals("success")) {
+                if (data.has("authModelUsed")){
+                    System.out.println("It is here");
+                }
                 if (data.get("chargeResponseCode").equals("02")) {
 
                     String flw = (String) data.get("flwRef");
@@ -80,7 +84,7 @@ public class account extends HttpServlet {
                     session.setAttribute("txRef", txref);
                     response.sendRedirect("otp");
                     return;
-                }
+                } 
                 else{
                      response.sendRedirect("success");
                     return;

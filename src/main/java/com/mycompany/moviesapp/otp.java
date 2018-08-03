@@ -30,7 +30,7 @@ public class otp extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher view = request.getRequestDispatcher("otp.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("otp-acc.jsp");
         view.forward(request, response);
     }
 
@@ -87,7 +87,7 @@ public class otp extends HttpServlet {
             }
         } catch (Exception ex) {
         }
-
+      
     }
 
     /**

@@ -80,6 +80,7 @@ public class account_dp extends HttpServlet {
                         .setTxRef(txref)
                         .setAmount("2000")
                         .setCountry("NG")
+                         .setRedirect_url("https://ravemovies.herokuapp.com/verify")
                         .setPayment_plan(plan_id)
                         .setCurrency("NGN");
 
