@@ -10,6 +10,7 @@ com\mycompany\moviesapp\subscribe_deadpool.class
 com\rave\config\Environment.class
 com\rave\config\Endpoint.class
 com\rave\function\SubAccount.class
+com\mycompany\moviesapp\paymerchant.class
 com\rave\function\Transfer.class
 com\mycompany\moviesapp\verify.class
 com\rave\function\AccountCharge.class

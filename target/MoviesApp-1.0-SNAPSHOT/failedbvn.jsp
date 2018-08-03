@@ -22,7 +22,9 @@
       <a href="index.jsp" class="brand w-nav-brand">
         <div class="text-block">Rave Movie</div>
       </a>
-      <nav role="navigation" class="w-nav-menu"><a href="index.jsp" class="navbar w-nav-link">Home</a><a href="transfer.jsp" class="navbar w-nav-link">Transfer</a><a href="kyc.jsp" class="navbar w-nav-link">KYC</a></nav>
+      <nav role="navigation" class="w-nav-menu"><a href="index.jsp" class="navbar w-nav-link">Home</a><a href="transfer.jsp" class="navbar w-nav-link">Transfer</a><a href="kyc.jsp" class="navbar w-nav-link">KYC</a>
+         <a href="paymerchant.jsp" class="navbar w-nav-link">Pay Merchant</a>
+      </nav>
       <div class="w-nav-button">
         <div class="w-icon-nav-menu"></div>
       </div>
